@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zorvix — Service Tracking</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background: #070924;
+            color: #fff;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .bg-blobs {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+            filter: saturate(1.2);
+            background: radial-gradient(ellipse at center, #000829 0%, #040222 100%);
+        }
+        
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.6;
+            mix-blend-mode: screen;
+            animation-timing-function: linear;
+        }
+        
+        .blob1 { width: 300px; height: 300px; background: #7c73e6; top: 36%; left: 6%; animation: moveBlob1 35s infinite alternate; }
+        .blob2 { width: 390px; height: 390px; background: #e14eca; top: 65%; left: 68%; animation: moveBlob2 38s infinite alternate; }
+        .blob3 { width: 200px; height: 240px; background: #00e0ff; top: 3%; left: 66%; animation: moveBlob3 44s infinite alternate; }
+        
+        @keyframes moveBlob1 { 0% {transform: translate(0, 0);} 100% {transform: translate(40px, -20px);} }
+        @keyframes moveBlob2 { 0% {transform: translate(0, 0);} 100% {transform: translate(-30px, 35px);} }
+        @keyframes moveBlob3 { 0% {transform: translate(0, 0);} 100% {transform: translate(-18px, 12px);} }
+        
+        .container {
+            display: flex;
+            width: 100%;
+            max-width: 1000px;
+            z-index: 1;
+            position: relative;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .left-panel {
+            flex: 1;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        .right-panel {
+            flex: 1.2;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        .header h1 {
+            font-weight: 600;
+            font-size: 28px;
+            margin-bottom: 5px;
+            background: linear-gradient(120deg, #4f46e5 0%, #7c73e6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 14px;
+            color: #a5b4fc;
+        }
+        
+        /* Status section */
+        .status-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(79, 70, 229, 0.1);
+            padding: 15px;
+            border-radius: 12px;
+        }
+        
+        .tracking-id {
+            font-size: 14px;
+            color: #a5b4fc;
+        }
+        
+        .tracking-id span {
+            font-weight: 600;
+            color: white;
+        }
+        
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .status-active {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+        }
+        
+        .status-cancelled {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+        
+        /* Service provider */
+        .service-provider {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+        }
+        
+        .provider-img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+            border: 2px solid #4f46e5;
+            background: #e0e7ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4f46e5;
+            font-weight: 600;
+        }
+        
+        .provider-info h3 {
+            color: #fff;
+            margin-bottom: 3px;
+            font-size: 16px;
+        }
+        
+        .provider-info p {
+            color: #a5b4fc;
+            font-size: 13px;
+        }
+        
+        /* Action buttons */
+        .action-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 12px 20px;
+            border-radius: 10px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+        }
+        
+        .btn-primary {
+            background: #4f46e5;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #4338ca;
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .btn-feedback {
+            background: #10b981;
+            color: white;
+        }
+        
+        .btn-feedback:hover {
+            background: #059669;
+        }
+        
+        .btn-cancel {
+            background: #ef4444;
+            color: white;
+        }
+        
+        .btn-cancel:hover {
+            background: #dc2626;
+        }
+        
+        /* Shop information */
+        .shop-info {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+        }
+        
+        .shop-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(79, 70, 229, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: #a5b4fc;
+            font-size: 20px;
+        }
+        
+        .shop-details h3 {
+            color: #fff;
+            margin-bottom: 3px;
+            font-size: 16px;
+        }
+        
+        .shop-details p {
+            color: #a5b4fc;
+            font-size: 13px;
+        }
+        
+        /* Timeline */
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 25px;
+            position: relative;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            bottom: 10px;
+            left: 85px;
+            width: 2px;
+            background: rgba(79, 70, 229, 0.3);
+            z-index: 0;
+        }
+        
+        .timeline.cancelled::before {
+            background: rgba(239, 68, 68, 0.3);
+        }
+        
+        .timeline-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            position: relative;
+        }
+        
+        .timeline-time {
+            min-width: 70px;
+            font-weight: 600;
+            color: #a5b4fc;
+            font-size: 14px;
+            padding-top: 2px;
+        }
+        
+        .timeline-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #4f46e5;
+            position: absolute;
+            left: 78px;
+            top: 6px;
+            z-index: 2;
+        }
+        
+        .timeline-dot.breathing {
+            animation: breath 2s infinite;
+        }
+        
+        .timeline-dot.completed {
+            background: #22c55e;
+        }
+        
+        .timeline-dot.cancelled {
+            background: #ef4444;
+        }
+        
+        .timeline-content {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            padding: 12px 15px;
+            border-left: 2px solid #4f46e5;
+            margin-left: 25px;
+        }
+        
+        .timeline-title {
+            font-weight: 500;
+            color: #fff;
+            font-size: 15px;
+            margin-bottom: 3px;
+        }
+        
+        .timeline-desc {
+            color: #a5b4fc;
+            font-size: 13px;
+        }
+        
+        .current-item .timeline-content {
+            border-left: 2px solid #22c55e;
+        }
+        
+        .current-item .timeline-title {
+            color: #22c55e;
+        }
+        
+        .cancelled-item .timeline-content {
+            border-left: 2px solid #ef4444;
+        }
+        
+        .cancelled-item .timeline-title {
+            color: #ef4444;
+        }
+        
+        /* New buttons section */
+        .buttons-section {
+            display: flex;
+            gap: 12px;
+            margin-top: 15px;
+        }
+        
+        .buttons-section .btn {
+            flex: 1;
+        }
+        
+        @keyframes breath {
+            0% {
+                box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.7);
+                transform: scale(1);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(79, 70, 229, 0);
+                transform: scale(1.1);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(79, 70, 229, 0);
+                transform: scale(1);
+            }
+        }
+        
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 12px;
+            color: #a5b4fc;
+        }
+        
+        /* Feedback Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(7, 9, 36, 0.8);
+            backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .feedback-modal {
+            background: rgba(13, 17, 54, 0.95);
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transform: translateY(30px);
+            transition: transform 0.4s ease;
+            position: relative;
+        }
+        
+        .modal-overlay.active .feedback-modal {
+            transform: translateY(0);
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: #a5b4fc;
+            font-size: 24px;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        
+        .modal-close:hover {
+            color: #fff;
+        }
+        
+        .feedback-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .feedback-header h2 {
+            font-size: 24px;
+            margin-bottom: 8px;
+            background: linear-gradient(120deg, #7c73e6 0%, #a5b4fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .feedback-header p {
+            color: #a5b4fc;
+            font-size: 14px;
+        }
+        
+        .rating-section {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .rating-title {
+            color: #fff;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        
+        .rating-stars {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .star {
+            font-size: 32px;
+            color: #4f46e5;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .star:hover {
+            transform: scale(1.2);
+            color: #a5b4fc;
+        }
+        
+        .star.active {
+            color: #ffc53d;
+        }
+        
+        .rating-labels {
+            display: flex;
+            justify-content: space-between;
+            color: #a5b4fc;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+        
+        .feedback-types {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+        
+        .feedback-type {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .feedback-type:hover {
+            background: rgba(79, 70, 229, 0.2);
+            border-color: #7c73e6;
+        }
+        
+        .feedback-type.selected {
+            background: rgba(79, 70, 229, 0.3);
+            border-color: #7c73e6;
+            box-shadow: 0 0 15px rgba(124, 115, 230, 0.4);
+        }
+        
+        .feedback-type i {
+            font-size: 20px;
+            margin-bottom: 8px;
+            display: block;
+            color: #a5b4fc;
+        }
+        
+        .feedback-type span {
+            font-size: 13px;
+            color: #fff;
+        }
+        
+        .feedback-comment {
+            margin-bottom: 25px;
+        }
+        
+        .feedback-comment textarea {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            color: #fff;
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .feedback-comment textarea:focus {
+            outline: none;
+            border-color: #7c73e6;
+        }
+        
+        .submit-feedback {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(120deg, #7c73e6 0%, #4f46e5 100%);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .submit-feedback:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.3);
+        }
+        
+        .thank-you-message {
+            text-align: center;
+            padding: 30px;
+        }
+        
+        .thank-you-message i {
+            font-size: 60px;
+            color: #22c55e;
+            margin-bottom: 20px;
+            animation: scaleUp 0.5s ease;
+        }
+        
+        .thank-you-message h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+        
+        .thank-you-message p {
+            color: #a5b4fc;
+            margin-bottom: 25px;
+        }
+        
+        @keyframes scaleUp {
+            0% { transform: scale(0); opacity: 0; }
+            70% { transform: scale(1.2); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        @media (max-width: 900px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .left-panel, .right-panel {
+                padding: 20px;
+            }
+            
+            .timeline::before {
+                left: 65px;
+            }
+            
+            .timeline-dot {
+                left: 58px;
+            }
+            
+            .feedback-types {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-blobs">
+        <div class="blob blob1"></div>
+        <div class="blob blob2"></div>
+        <div class="blob blob3"></div>
+    </div>
+    
+    <div class="container">
+        <div class="left-panel">
+            <div class="header">
+                <h1>Service Tracking</h1>
+                <p>Real-time updates on your cleaning service</p>
+            </div>
+            
+            <!-- Status Section -->
+            <div class="status-section">
+                <div class="tracking-id">ID: <span>22-489-328</span></div>
+                <div class="status-badge status-active" id="statusBadge">IN PROGRESS</div>
+            </div>
+            
+            <!-- Service Provider -->
+            <div class="service-provider">
+                <div class="provider-img">PS</div>
+                <div class="provider-info">
+                    <h3>Priya Sharma</h3>
+                    <p>Service Supervisor • +91 83995 84833</p>
+                </div>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button class="btn btn-primary">Contact Supervisor</button>
+                <button class="btn btn-secondary">Return Home</button>
+            </div>
+            
+            <!-- Shop Information -->
+            <div class="shop-info">
+                <div class="shop-icon">🏪</div>
+                <div class="shop-details">
+                    <h3>UrbanTech HUB Main Branch</h3>
+                    <p>2.3 km away • Open until 6:00 PM</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="right-panel">
+            <!-- Timeline -->
+            <div class="timeline" id="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-time">9:05 AM</div>
+                    <div class="timeline-dot breathing"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Booking Confirmed</div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-time">9:15 AM</div>
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Velandipalayam, Coimbatore</div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-time">9:45 AM</div>
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Near You</div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item current-item">
+                    <div class="timeline-time">CURRENT</div>
+                    <div class="timeline-dot completed"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Near Location</div>
+                        <div class="timeline-desc">In your Home</div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-time">10:30 AM</div>
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Completed</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- New Buttons Section -->
+            <div class="buttons-section">
+                <button class="btn btn-feedback" id="feedbackBtn">Feedback</button>
+                <button class="btn btn-cancel" id="cancelBtn">Cancel Service</button>
+            </div>
+            
+            <!-- Footer -->
+            <div class="footer">
+                <div>ENG US</div>
+                <div>09/01/2025</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Feedback Modal -->
+    <div class="modal-overlay" id="feedbackModal">
+        <div class="feedback-modal">
+            <button class="modal-close" id="closeModal">&times;</button>
+            
+            <div class="feedback-content" id="feedbackContent">
+                <div class="feedback-header">
+                    <h2>Rate Your Experience</h2>
+                    <p>How would you rate our cleaning service?</p>
+                </div>
+                
+                <div class="rating-section">
+                    <div class="rating-title">Your Rating</div>
+                    <div class="rating-stars">
+                        <div class="star" data-value="1">★</div>
+                        <div class="star" data-value="2">★</div>
+                        <div class="star" data-value="3">★</div>
+                        <div class="star" data-value="4">★</div>
+                        <div class="star" data-value="5">★</div>
+                    </div>
+                    <div class="rating-labels">
+                        <span>Poor</span>
+                        <span>Excellent</span>
+                    </div>
+                </div>
+                
+                <div class="feedback-types">
+                    <div class="feedback-type" data-type="quality">
+                        <i class="fas fa-sparkles"></i>
+                        <span>Quality</span>
+                    </div>
+                    <div class="feedback-type" data-type="punctuality">
+                        <i class="fas fa-clock"></i>
+                        <span>Punctuality</span>
+                    </div>
+                    <div class="feedback-type" data-type="professionalism">
+                        <i class="fas fa-suitcase"></i>
+                        <span>Professionalism</span>
+                    </div>
+                    <div class="feedback-type" data-type="communication">
+                        <i class="fas fa-comments"></i>
+                        <span>Communication</span>
+                    </div>
+                </div>
+                
+                <div class="feedback-comment">
+                    <textarea placeholder="Additional comments (optional)"></textarea>
+                </div>
+                
+                <button class="submit-feedback" id="submitFeedback">Submit Feedback</button>
+            </div>
+            
+            <div class="thank-you-message" id="thankYouMessage" style="display: none;">
+                <i class="fas fa-check-circle"></i>
+                <h3>Thank You!</h3>
+                <p>We appreciate your feedback and will use it to improve our services.</p>
+                <button class="submit-feedback" id="closeThankYou">Done</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cancelBtn = document.getElementById('cancelBtn');
+            const feedbackBtn = document.getElementById('feedbackBtn');
+            const feedbackModal = document.getElementById('feedbackModal');
+            const closeModal = document.getElementById('closeModal');
+            const submitFeedback = document.getElementById('submitFeedback');
+            const closeThankYou = document.getElementById('closeThankYou');
+            const feedbackContent = document.getElementById('feedbackContent');
+            const thankYouMessage = document.getElementById('thankYouMessage');
+            const timeline = document.getElementById('timeline');
+            const statusBadge = document.getElementById('statusBadge');
+            const stars = document.querySelectorAll('.star');
+            const feedbackTypes = document.querySelectorAll('.feedback-type');
+            
+            let currentRating = 0;
+            let selectedTypes = [];
+            
+            // Cancel service functionality
+            cancelBtn.addEventListener('click', function() {
+                if (confirm('Are you sure you want to cancel this service?')) {
+                    statusBadge.textContent = 'CANCELLED';
+                    statusBadge.classList.remove('status-active');
+                    statusBadge.classList.add('status-cancelled');
+                    
+                    timeline.classList.add('cancelled');
+                    
+                    const timelineItems = document.querySelectorAll('.timeline-item');
+                    timelineItems.forEach(item => {
+                        item.classList.remove('current-item');
+                        item.classList.add('cancelled-item');
+                        
+                        const dot = item.querySelector('.timeline-dot');
+                        if (dot) {
+                            dot.classList.remove('breathing', 'completed');
+                            dot.classList.add('cancelled');
+                        }
+                    });
+                    
+                    cancelBtn.disabled = true;
+                    cancelBtn.style.opacity = '0.7';
+                    cancelBtn.style.cursor = 'not-allowed';
+                    
+                    alert('Service has been cancelled successfully.');
+                }
+            });
+            
+            // Open feedback modal
+            feedbackBtn.addEventListener('click', function() {
+                feedbackModal.classList.add('active');
+            });
+            
+            // Close feedback modal
+            closeModal.addEventListener('click', function() {
+                feedbackModal.classList.remove('active');
+            });
+            
+            // Star rating functionality
+            stars.forEach(star => {
+                star.addEventListener('click', function() {
+                    const value = parseInt(this.getAttribute('data-value'));
+                    currentRating = value;
+                    
+                    stars.forEach(s => {
+                        s.classList.remove('active');
+                    });
+                    
+                    for (let i = 0; i < value; i++) {
+                        stars[i].classList.add('active');
+                    }
+                });
+            });
+            
+            // Feedback type selection
+            feedbackTypes.forEach(type => {
+                type.addEventListener('click', function() {
+                    this.classList.toggle('selected');
+                    const typeValue = this.getAttribute('data-type');
+                    
+                    if (this.classList.contains('selected')) {
+                        if (!selectedTypes.includes(typeValue)) {
+                            selectedTypes.push(typeValue);
+                        }
+                    } else {
+                        selectedTypes = selectedTypes.filter(t => t !== typeValue);
+                    }
+                });
+            });
+            
+            // Submit feedback
+            submitFeedback.addEventListener('click', function() {
+                if (currentRating === 0) {
+                    alert('Please provide a rating before submitting.');
+                    return;
+                }
+                
+                feedbackContent.style.display = 'none';
+                thankYouMessage.style.display = 'block';
+            });
+            
+            // Close thank you message
+            closeThankYou.addEventListener('click', function() {
+                feedbackModal.classList.remove('active');
+                feedbackContent.style.display = 'block';
+                thankYouMessage.style.display = 'none';
+                
+                // Reset form
+                stars.forEach(s => s.classList.remove('active'));
+                feedbackTypes.forEach(t => t.classList.remove('selected'));
+                document.querySelector('.feedback-comment textarea').value = '';
+                currentRating = 0;
+                selectedTypes = [];
+            });
+            
+            // Close modal when clicking outside
+            feedbackModal.addEventListener('click', function(e) {
+                if (e.target === feedbackModal) {
+                    feedbackModal.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

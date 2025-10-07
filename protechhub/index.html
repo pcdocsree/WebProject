@@ -1,0 +1,1662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UrbanTech HUB - Book Local Services</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/png" href="LOGO.jpg">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --secondary: #10b981;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray: #94a3b8;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }   
+        
+        body {
+            background-color: #f1f5f9;
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+        
+        /* Navigation */
+        .main-navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            padding: 12px 5%;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+        
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: var(--primary);
+            text-decoration: none;
+        }
+        
+        .nav-logo img {
+            height: 48px;
+            width: auto;
+            border-radius: 6px;
+        }
+        
+        .nav-menu {
+            list-style: none;
+            display: flex;
+            gap: 1.5rem;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .nav-menu li a {
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--dark);
+            transition: 0.3s ease;
+            padding: 8px 12px;
+            border-radius: 6px;
+        }
+        
+        .nav-menu li a:hover {
+            color: var(--primary);
+            background: rgba(79, 70, 229, 0.1);
+        }
+        
+        .nav-right {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .nav-right a {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: 0.3s;
+            font-size: 0.95rem;
+        }
+        
+        .btn-outline {
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #4338ca;
+        }
+    
+        /* Get Started Button */
+        .btn-get-started {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 0.8rem 1.8rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            text-decoration: none;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+    
+        .btn-get-started:hover {
+            background: #4338ca;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            padding: 5rem 5%;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="white" opacity="0.1"/><path d="M0,50 L100,50 M50,0 L50,100" stroke="white" stroke-width="0.5" opacity="0.2"/></svg>');
+            opacity: 0.3;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: #e2e8f0;
+            animation: fadeIn 1s ease-out 0.4s both;
+        }
+        
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto;
+            animation: fadeInUp 0.8s ease-out 0.6s both;
+            position: relative;
+        }
+        
+        .search-box {
+            background: white;
+            border-radius: 0.5rem;
+            padding: 0.5rem;
+            display: flex;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+        
+        .search-box:hover {
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+            transform: translateY(-2px);
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: 0.8rem 1rem;
+            border: none;
+            outline: none;
+            font-size: 1rem;
+            border-radius: 0.5rem 0 0 0.5rem;
+            transition: all 0.3s;
+        }
+        
+        .search-input:focus {
+            box-shadow: inset 0 0 0 2px var(--primary);
+        }
+        
+        .location-input {
+            flex: 1;
+            padding: 0.8rem 1rem;
+            border: none;
+            outline: none;
+            font-size: 1rem;
+            border-left: 1px solid #e2e8f0;
+            border-right: 1px solid #e2e8f0;
+            transition: all 0.3s;
+        }
+        
+        .location-input:focus {
+            box-shadow: inset 0 0 0 2px var(--primary);
+        }
+        
+        .search-btn {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 0 1.5rem;
+            border-radius: 0 0.5rem 0.5rem 0;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .search-btn:hover {
+            background: #0d9e6e;
+            transform: translateX(2px);
+        }
+        
+        /* Autocomplete dropdown */
+        datalist {
+            position: absolute;
+            background-color: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 0 0 0.5rem 0.5rem;
+            border-top: none;
+            width: calc(100% - 1rem);
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 100;
+            margin-top: -0.5rem;
+        }
+    
+        datalist option {
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+        }
+    
+        datalist option:hover {
+            background-color: #f1f5f9;
+        }
+        
+        /* Categories */
+        .categories {
+            padding: 4rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        .section-title h2 {
+            font-size: 2rem;
+            color: var(--dark);
+        }
+        
+        .section-title p {
+            color: var(--gray);
+        }
+        
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .category-card {
+            background: white;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+            cursor: pointer;
+            animation: fadeInUp 0.6s ease-out;
+            animation-fill-mode: both;
+        }
+        
+        .category-card:nth-child(1) { animation-delay: 0.2s; }
+        .category-card:nth-child(2) { animation-delay: 0.3s; }
+        .category-card:nth-child(3) { animation-delay: 0.4s; }
+        .category-card:nth-child(4) { animation-delay: 0.5s; }
+        
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+        }
+        
+        .category-img {
+            height: 150px;
+            background-color: #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 3rem;
+            transition: all 0.3s;
+        }
+        
+        .category-card:hover .category-img {
+            background-color: #dbeafe;
+            color: #4338ca;
+        }
+        
+        .category-info {
+            padding: 1.5rem;
+        }
+        
+        .category-info h3 {
+            margin-bottom: 0.5rem;
+            transition: color 0.3s;
+        }
+        
+        .category-card:hover .category-info h3 {
+            color: var(--primary);
+        }
+        
+        .category-info p {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        /* Popular Services */
+        .services {
+            padding: 4rem 5%;
+            background: white;
+        }
+        
+        .services-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .service-card {
+            background: white;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s;
+            animation: fadeInUp 0.6s ease-out;
+            animation-fill-mode: both;
+        }
+        
+        .service-card:nth-child(1) { animation-delay: 0.2s; }
+        .service-card:nth-child(2) { animation-delay: 0.3s; }
+        .service-card:nth-child(3) { animation-delay: 0.4s; }
+        
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            border-color: var(--primary);
+        }
+        
+        .service-img {
+            height: 200px;
+            background-color: #e2e8f0;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #94a3b8;
+            font-size: 2rem;
+        }
+        
+        .service-img::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(124, 58, 237, 0.1));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .service-card:hover .service-img::before {
+            opacity: 1;
+        }
+        
+        .service-rating {
+            position: absolute;
+            bottom: 1rem;
+            left: 1rem;
+            background: white;
+            padding: 0.3rem 0.6rem;
+            border-radius: 2rem;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            z-index: 1;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .service-rating i {
+            color: #f59e0b;
+        }
+        
+        .service-info {
+            padding: 1.5rem;
+        }
+        
+        .service-info h3 {
+            margin-bottom: 0.5rem;
+            transition: color 0.3s;
+        }
+        
+        .service-card:hover .service-info h3 {
+            color: var(--primary);
+        }
+        
+        .service-provider {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .provider-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .service-card:hover .provider-avatar {
+            transform: scale(1.1);
+        }
+        
+        .service-price {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+        }
+        
+        .price {
+            font-weight: bold;
+            color: var(--primary);
+            transition: all 0.3s;
+        }
+        
+        .service-card:hover .price {
+            transform: scale(1.05);
+        }
+        
+        .btn-book {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-book:hover {
+            background: #4338ca;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(79, 70, 229, 0.2);
+        }
+        
+        /* How It Works */
+        .how-it-works {
+            padding: 4rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .steps {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+        
+        .step {
+            flex: 1;
+            min-width: 250px;
+            text-align: center;
+            padding: 1.5rem;
+            animation: fadeInUp 0.6s ease-out;
+            animation-fill-mode: both;
+        }
+        
+        .step:nth-child(1) { animation-delay: 0.2s; }
+        .step:nth-child(2) { animation-delay: 0.4s; }
+        .step:nth-child(3) { animation-delay: 0.6s; }
+        
+        .step-icon {
+            width: 80px;
+            height: 80px;
+            background: #e0e7ff;
+            color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 1.5rem;
+            transition: all 0.3s;
+        }
+        
+        .step:hover .step-icon {
+            background: var(--primary);
+            color: white;
+            transform: scale(1.1) rotate(5deg);
+        }
+        
+        .step h3 {
+            margin-bottom: 0.5rem;
+            transition: color 0.3s;
+        }
+        
+        .step:hover h3 {
+            color: var(--primary);
+        }
+        
+        .step p {
+            color: var(--gray);
+            transition: color 0.3s;
+        }
+        
+        .step:hover p {
+            color: var(--dark);
+        }
+        
+        /* Service Providers Section */
+        .providers-section {
+            padding: 4rem 5%;
+            background: var(--dark);
+            color: white;
+        }
+        
+        .providers-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .providers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .provider-card {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 1rem;
+            padding: 1rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: 0.3s;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .provider-card:hover {
+            box-shadow: 0 0 10px var(--primary);
+            transform: translateY(-5px);
+        }
+        
+        .provider-img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 0.8rem;
+            background: #334155;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #94a3b8;
+            font-size: 3rem;
+        }
+        
+        .avatar-overlay {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 3px solid white;
+            overflow: hidden;
+            background: #1e293b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+        
+        .provider-card h3 {
+            margin: 1rem 0 0.5rem;
+            font-size: 1.4rem;
+        }
+        
+        .provider-card p {
+            color: #cbd5e1;
+            margin-bottom: 1rem;
+            flex-grow: 1;
+        }
+        
+        .provider-link {
+            display: block;
+            margin-top: auto;
+            text-decoration: none;
+        }
+        
+        .btn-provider {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+        }
+        
+        .btn-provider:hover {
+            background: #4338ca;
+        }
+            
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 4rem 5% 2rem;
+        }
+        
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+        
+        .footer-col h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        
+        .footer-col h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -10px;
+            width: 50px;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s;
+        }
+        
+        .footer-col:hover h3::after {
+            width: 80px;
+        }
+        
+        .footer-col ul {
+            list-style: none;
+        }
+        
+        .footer-col ul li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-col ul li a {
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+        
+        .footer-col ul li a:hover {
+            color: white;
+            transform: translateX(5px);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .social-links a {
+            color: white;
+            background: #334155;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid #334155;
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+        
+        /* Mobile Menu */
+        .menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .menu-toggle:hover {
+            transform: rotate(90deg);
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .service-section {
+            background: linear-gradient(135deg, #083d47, #0a5588);
+            padding: 3rem 5%;
+        }
+    
+        .service-content {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            max-width: 1100px;
+            margin: auto;
+            gap: 2rem;
+        }
+    
+        .service-image {
+            position: relative;
+            flex: 1 1 300px;
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0px 4px 12px rgba(0,0,0,0.2);
+        }
+    
+        .service-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+    
+        .schedule-btn {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background-color: #ffcd3c;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    
+        .schedule-btn:hover {
+            background-color: #e6b933;
+        }
+    
+        .service-text {
+            flex: 1 1 400px;
+            color: white;
+        }
+    
+        .service-text h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+    
+        .service-text p {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+    
+        .request-btn {
+            background-color: #381bdd;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            color: white;
+        }
+    
+        .request-btn:hover {
+            background-color: #0a55f7;
+        }
+        .service-img {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+    
+        .service-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+    
+        /* Overlay */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 1000;
+        }
+    
+        html {
+          scroll-behavior: smooth;
+        }
+        
+        /* Horizontal scroller with CSS Scroll Snap */
+        .category-scroller-wrapper {
+          position: relative;
+          max-width: 1400px;
+          margin: 0 auto;
+        }
+
+        .category-scroller {
+          display: flex;
+          gap: 1rem;
+          overflow-x: auto;
+          padding: 0.25rem 0.25rem 0.5rem;
+          scroll-snap-type: x proximity;
+          -webkit-overflow-scrolling: touch;
+        }
+
+        /* Snap each card to the left edge */
+        .category-scroller .category-card {
+          flex: 0 0 260px;
+          min-width: 240px;
+          scroll-snap-align: start;
+        }
+
+        /* Optional: subtle scrollbar */
+        .category-scroller::-webkit-scrollbar { height: 8px; }
+        .category-scroller::-webkit-scrollbar-track { background: #e5e7eb; border-radius: 8px; }
+        .category-scroller::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 8px; }
+        .category-scroller:hover::-webkit-scrollbar-thumb { background: #94a3b8; }
+
+        /* Arrow buttons */
+        .cat-nav {
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 42px; height: 42px;
+          border-radius: 999px;
+          border: 1px solid #e2e8f0;
+          background: #fff;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+          color: var(--dark);
+          display: inline-flex; align-items: center; justify-content: center;
+          cursor: pointer;
+          z-index: 2;
+        }
+        .cat-nav.left { left: -10px; }
+        .cat-nav.right { right: -10px; }
+        .cat-nav:hover { background: #f8fafc; }
+
+        /* Make cards feel tappable in carousel */
+        .category-card { cursor: grab; }
+        .category-card:active { cursor: grabbing; }
+
+        /* ========== RESPONSIVE DESIGN ========== */
+        
+        /* Tablet Styles (768px and below) */
+        @media (max-width: 768px) {
+            .main-navbar {
+                padding: 12px 5%;
+                flex-wrap: wrap;
+            }
+            
+            .nav-menu {
+                display: none;
+                width: 100%;
+                flex-direction: column;
+                gap: 0;
+                margin-top: 1rem;
+            }
+            
+            .nav-menu.active {
+                display: flex;
+            }
+            
+            .nav-menu li {
+                width: 100%;
+                text-align: center;
+            }
+            
+            .nav-menu li a {
+                display: block;
+                padding: 1rem;
+                border-radius: 0;
+                border-bottom: 1px solid #f1f5f9;
+            }
+            
+            .nav-right {
+                display: none;
+                width: 100%;
+                flex-direction: column;
+                gap: 0.5rem;
+                margin-top: 1rem;
+            }
+            
+            .nav-right.active {
+                display: flex;
+            }
+            
+            .nav-right a {
+                text-align: center;
+                padding: 0.8rem;
+            }
+            
+            .menu-toggle {
+                display: block;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .search-box {
+                flex-direction: column;
+                padding: 1rem;
+            }
+            
+            .search-input, .location-input {
+                width: 100%;
+                border-radius: 0.5rem;
+                margin-bottom: 0.5rem;
+                border: 1px solid #e2e8f0;
+            }
+            
+            .search-btn {
+                border-radius: 0.5rem;
+                padding: 0.8rem;
+                justify-content: center;
+            }
+            
+            .service-content {
+                flex-direction: column;
+            }
+            
+            .service-image, .service-text {
+                flex: 1 1 100%;
+            }
+            
+            .steps {
+                flex-direction: column;
+                gap: 2rem;
+            }
+            
+            .step {
+                min-width: 100%;
+            }
+            
+            .category-scroller .category-card {
+                flex: 0 0 220px;
+                min-width: 220px;
+            }
+            
+            .cat-nav {
+                display: none;
+            }
+            
+            .section-title h2 {
+                font-size: 1.8rem;
+            }
+        }
+        
+        /* Mobile Styles (480px and below) */
+        @media (max-width: 480px) {
+            .main-navbar {
+                padding: 10px 5%;
+            }
+            
+            .nav-logo {
+                font-size: 1.3rem;
+            }
+            
+            .hero {
+                padding: 3rem 5%;
+            }
+            
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .hero p {
+                font-size: 0.9rem;
+            }
+            
+            .categories, .services, .how-it-works, .providers-section {
+                padding: 2rem 5%;
+            }
+            
+            .section-title h2 {
+                font-size: 1.5rem;
+            }
+            
+            .category-scroller .category-card {
+                flex: 0 0 180px;
+                min-width: 180px;
+            }
+            
+            .category-img {
+                height: 120px;
+                font-size: 2rem;
+            }
+            
+            .category-info {
+                padding: 1rem;
+            }
+            
+            .category-info h3 {
+                font-size: 1rem;
+            }
+            
+            .category-info p {
+                font-size: 0.8rem;
+            }
+            
+            .service-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .service-img {
+                height: 160px;
+            }
+            
+            .service-info {
+                padding: 1rem;
+            }
+            
+            .step-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5rem;
+            }
+            
+            .step h3 {
+                font-size: 1.2rem;
+            }
+            
+            .step p {
+                font-size: 0.9rem;
+            }
+            
+            .providers-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .provider-img {
+                height: 150px;
+                font-size: 2rem;
+            }
+            
+            .footer-container {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .footer-col h3 {
+                font-size: 1.1rem;
+            }
+            
+            .social-links {
+                justify-content: center;
+            }
+        }
+        
+        /* Small Mobile Styles (360px and below) */
+        @media (max-width: 360px) {
+            .nav-logo {
+                font-size: 1.1rem;
+            }
+            
+            .hero h1 {
+                font-size: 1.5rem;
+            }
+            
+            .btn-get-started {
+                padding: 0.7rem 1.5rem;
+                font-size: 0.9rem;
+            }
+            
+            .category-scroller .category-card {
+                flex: 0 0 160px;
+                min-width: 160px;
+            }
+            
+            .category-img {
+                height: 100px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Navigation --> 
+    <nav class="main-navbar">
+        <a href="#" class="nav-logo">
+            <span>UrbanTech HUB</span>
+        </a>
+        
+        <ul class="nav-menu">
+            <li><a href="index.html">Home</a></li>
+           <li><a href="#Popular-Categories" class="nav-link">Services</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+                        
+        <div class="nav-right">
+            <a href="login.php" class="btn-outline">Log In</a>
+            <a href="signup.php" class="btn-primary">Sign Up</a>
+        </div>
+        
+        <div class="menu-toggle">
+            <i class="fas fa-bars"></i>
+        </div>
+    </nav>
+
+    <section class="service-section">
+        <div class="service-content">
+          <!-- Left: Image Card -->
+          <div class="service-image">
+            <img src="people.png" alt="Service" />
+          </div>
+      
+          <!-- Right: Text Content -->
+          <div class="service-text">
+            <h2>UrbanTech HUB - Your All in one Service Partner </h2>
+            <p>
+              Want to step it up with UrbanTech HUB? Technology is just one piece of the puzzle. 
+              With UrbanTech HUB, you're not just getting the right tools—you're getting a partner 
+              dedicated to boosting your confidence, strengthening your skills, and supporting 
+              you every step of the way.
+            </p>
+            <p>
+              We've been leading the home & business service space since 2023, connecting 
+              thousands of trusted professionals with customers just like you. Come work with us.
+            </p>
+            <a href="main.html" class="btn-get-started">Get Started</a>
+          </div>
+        </div>
+      </section>
+      
+    
+    <!-- Popular Categories (Horizontal Swipe) -->
+<section class="categories" id="Popular-Categories">
+  <div class="section-title">
+    <h2>Popular Categories We Provide</h2>
+    <p>Browse services by category</p>
+  </div>
+
+  <div class="category-scroller-wrapper">
+    <button class="cat-nav left" aria-label="Scroll left">
+      <i class="fa-solid fa-chevron-left"></i>
+    </button>
+
+    <div class="category-scroller" id="categoryScroller" tabindex="0" aria-label="Swipe categories">
+      <!-- 1 -->
+      <div class="category-card">
+        <div class="category-img"><i class="fa-solid fa-shower"></i></div>
+        <div class="category-info">
+          <h3>Plumbing</h3>
+          <p>Leaks, installations, repairs</p>
+        </div>
+      </div>
+      <!-- 2 -->
+      <div class="category-card">
+        <div class="category-img"><i class="fa-solid fa-bolt"></i></div>
+        <div class="category-info">
+          <h3>Electrical</h3>
+          <p>Wiring, fixtures, power issues</p>
+        </div>
+      </div>
+      <!-- 3 -->
+      <div class="category-card">
+        <div class="category-img"><i class="fa-solid fa-broom"></i></div>
+        <div class="category-info">
+          <h3>Home Cleaning</h3>
+          <p>Deep cleaning & maintenance</p>
+        </div>
+      </div>
+      <!-- 4 -->
+      <div class="category-card">
+        <div class="category-img"><i class="fa-solid fa-laptop"></i></div>
+        <div class="category-info">
+          <h3>Computer Repair</h3>
+          <p>Hardware & software fixes</p>
+        </div>
+      </div>
+      <!-- 5 -->
+      <div class="category-card">
+        <div class="category-img"><i class="fa-solid fa-tv"></i></div>
+        <div class="category-info">
+          <h3>TV Service</h3>
+          <p>Setup & troubleshooting</p>
+        </div>
+      </div>
+      <!-- 6 -->
+      <div class="category-card">
+        <div class="category-img"><i class="fa-solid fa-mobile-screen"></i></div>
+        <div class="category-info">
+          <h3>Mobile Repair</h3>
+          <p>Screens, battery, software</p>
+        </div>
+      </div>
+      <!-- 7 -->
+      <div class="category-card">
+        <div class="category-img"><i class="fa-solid fa-wifi"></i></div>
+        <div class="category-info">
+          <h3>Router / Network</h3>
+          <p>Setup & performance</p>
+        </div>
+      </div>
+      <!-- 8 -->
+      <div class="category-card">
+        <div class="category-img"><i class="fa-solid fa-video"></i></div>
+        <div class="category-info">
+          <h3>CCTV Install</h3>
+          <p>Home & business security</p>
+        </div>
+      </div>
+      <!-- 9 -->
+      <div class="category-card">
+        <div class="category-img"><i class="fa-solid fa-paintbrush"></i></div>
+        <div class="category-info">
+          <h3>Painting</h3>
+          <p>Interior & exterior</p>
+        </div>
+      </div>
+      <!-- 10 -->
+      <div class="category-card">
+        <div class="category-img"><i class="fa-solid fa-hammer"></i></div>
+        <div class="category-info">
+          <h3>Carpentry</h3>
+          <p>Furniture & fittings</p>
+        </div>
+      </div>
+      <!-- 11 -->
+      <div class="category-card">
+        <div class="category-img"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+        <div class="category-info">
+          <h3>Appliance Repair</h3>
+          <p>Common home appliances</p>
+        </div>
+      </div>
+      <!-- 12 -->
+      <div class="category-card">
+        <div class="category-img"><i class="fa-solid fa-snowflake"></i></div>
+        <div class="category-info">
+          <h3>AC Service</h3>
+          <p>Cleaning & gas refill</p>
+        </div>
+      </div>
+      <!-- 13 -->
+      <div class="category-card">
+        <div class="category-img"><i class="fa-solid fa-temperature-low"></i></div>
+        <div class="category-info">
+          <h3>Fridge Repair</h3>
+          <p>Cooling & compressor</p>
+        </div>
+      </div>
+      <!-- 14 -->
+      <div class="category-card">
+        <div class="category-img"><i class="fa-solid fa-droplet"></i></div>
+        <div class="category-info">
+          <h3>Washing Machine</h3>
+          <p>Drum & drainage issues</p>
+        </div>
+      </div>
+      <!-- 15 -->
+      <div class="category-card">
+        <div class="category-img"><i class="fa-solid fa-utensils"></i></div>
+        <div class="category-info">
+          <h3>Kitchen Repair</h3>
+          <p>Sinks & fittings</p>
+        </div>
+      </div>
+      <!-- 18 -->
+      <div class="category-card">
+        <div class="category-img"><i class="fa-solid fa-car"></i></div>
+        <div class="category-info">
+          <h3>Auto Repair</h3>
+          <p>Maintenance & service</p>
+        </div>
+      </div>
+      <!-- 22 -->
+      <div class="category-card">
+        <div class="category-img"><i class="fa-solid fa-door-open"></i></div>
+        <div class="category-info">
+          <h3>Door Camera Fit</h3>
+          <p>Smart doorbells</p>
+        </div>
+      </div>
+      <!-- 24 -->
+      <div class="category-card">
+        <div class="category-img"><i class="fa-solid fa-truck"></i></div>
+        <div class="category-info">
+          <h3>Moving Services</h3>
+          <p>Local & intercity</p>
+        </div>
+      </div>
+      <!-- 25 -->
+      <div class="category-card">
+        <div class="category-img"><i class="fa-solid fa-camera"></i></div>
+        <div class="category-info">
+          <h3>Photography</h3>
+          <p>Events & shoots</p>
+        </div>
+      </div>
+    </div>
+
+    <button class="cat-nav right" aria-label="Scroll right">
+      <i class="fa-solid fa-chevron-right"></i>
+    </button>
+  </div>
+</section>
+    
+    <!-- How It Works -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="section-title">
+            <h2>How It Works</h2>
+            <p>Get your service booked in 3 easy steps</p>
+        </div>
+        
+        <div class="steps">
+            <div class="step">
+                <div class="step-icon">
+                    <i class="fas fa-search"></i>
+                </div>
+                <h3>Find a Service</h3>
+                <p>  Discover and connect with trusted professionals in just a few clicks. 
+                    Tell us what you need, and we'll match you with the best service providers 
+                    to get the job done right the first time.</p>
+            </div>
+            
+            <div class="step">
+                <div class="step-icon">
+                    <i class="fas fa-calendar-check"></i>
+                </div>
+                <h3>Find Worker's</h3>
+                <p> We find the right company for your needs and refer them directly to you, 
+                    ensuring you connect with trusted professionals quickly and hassle-free.
+                  </p></p>
+            </div>
+            
+            <div class="step">
+                <div class="step-icon">
+                    <i class="fas fa-smile"></i>
+                </div>
+                <h3>Enjoy Your Service</h3>
+                <p>Sit back and relax while our recommended professionals handle the work. 
+                    From start to finish, we ensure you enjoy a smooth, stress-free experience 
+                    with quality results you can trust.</p>
+            </div>
+        </div>
+    </section>
+    
+    
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-col">
+                <h3>UrbanTech HUB</h3>
+                <p>Connecting you with the best local service professionals in your community.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-col">
+                <h3>Company</h3>
+        <ul>
+          <li><a href="navabout.html" tabindex="0">About Us</a></li>
+          <li><a href="carr.html" tabindex="0">Careers</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Support</h3>
+        <ul>
+          <li><a href="#" tabindex="0">Help Center</a></li>
+          <li><a href="contact.html" tabindex="0">Contact Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Legal</h3>
+        <ul>
+          <li><a href="#" tabindex="0">Terms of Service</a></li>
+          <li><a href="#" tabindex="0">Privacy Policy</a></li>
+        </ul>
+        
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; 2024 Protech HUB. All rights reserved.</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Service autocomplete data
+        const services = [
+            "Plumbing",
+            "Electrical",
+            "Home Cleaning",
+            "Computer Repair",
+            "Carpentry",
+            "Painting",
+            "Hardwware Repair",
+            "CCTV Camera Fix / Service",
+            "Chip Level Service",
+            "Moving Services",
+            "Pest Control",
+            "Locksmith",
+            "Roofing",
+            "Handyman",
+            "Auto Repair",
+            "Child Care",
+            "Pet Care",
+            "Tutoring",
+            "Photography",
+            "Event Planning"
+        ];
+
+        // Populate datalist with services
+        const servicesList = document.getElementById('services-list');
+        services.forEach(service => {
+            const option = document.createElement('option');
+            option.value = service;
+            servicesList.appendChild(option);
+        });
+
+        // Mobile menu toggle
+        document.querySelector('.menu-toggle').addEventListener('click', function() {
+            document.querySelector('.nav-menu').classList.toggle('active');
+            document.querySelector('.nav-right').classList.toggle('active');
+        });
+        
+        // Search functionality
+        document.querySelector('.search-btn').addEventListener('click', function() {
+            const service = document.querySelector('.search-input').value;
+            const location = document.querySelector('.location-input').value;
+            
+            if (!service || !location) {
+                alert('Please enter both service and location');
+                return;
+            }
+            
+            alert(`Searching for "${service}" in "${location}"`);
+        });
+        
+        // Book now buttons
+        document.querySelectorAll('.btn-book').forEach(button => {
+            button.addEventListener('click', function() {
+                const service = this.closest('.service-card').querySelector('h3').textContent;
+                alert(`Booking: ${service}`);
+            });
+        });
+        
+        // Provider buttons
+        document.querySelectorAll('.btn-provider').forEach(button => {
+            button.addEventListener('click', function() {
+                const provider = this.closest('.provider-card').querySelector('h3').textContent;
+                alert(`Viewing services for: ${provider}`);
+            });
+        });
+        
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 70,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu if open
+                    document.querySelector('.nav-menu').classList.remove('active');
+                    document.querySelector('.nav-right').classList.remove('active');
+                }
+            });
+        });
+        
+        // Add animation on scroll
+        document.addEventListener('DOMContentLoaded', function() {
+            const animateOnScroll = function() {
+                const elements = document.querySelectorAll('.category-card, .service-card, .step, .provider-card');
+                
+                elements.forEach(element => {
+                    const elementPosition = element.getBoundingClientRect().top;
+                    const screenPosition = window.innerHeight / 1.3;
+                    
+                    if (elementPosition < screenPosition) {
+                        element.style.animationPlayState = 'running';
+                    }
+                });
+            };
+            
+            // Run once on load
+            animateOnScroll();
+            
+            // Run on scroll
+            window.addEventListener('scroll', animateOnScroll);
+        });
+        
+        window.onload = function() {
+    // Show popup when page loads
+    document.getElementById("termsOverlay").style.display = "block";
+};
+
+function acceptTerms() {
+    // Hide popup when accepted
+    document.getElementById("termsOverlay").style.display = "none";
+}
+
+    </script>
+    <script>
+  // Category scroller controls
+  (function(){
+    const scroller = document.getElementById('categoryScroller');
+    const btnL = document.querySelector('.cat-nav.left');
+    const btnR = document.querySelector('.cat-nav.right');
+
+    const jump = () => Math.max(240, Math.floor(scroller.clientWidth * 0.9));
+
+    btnL?.addEventListener('click', () => {
+      scroller.scrollBy({ left: -jump(), behavior: 'smooth' });
+    });
+    btnR?.addEventListener('click', () => {
+      scroller.scrollBy({ left: jump(), behavior: 'smooth' });
+    });
+
+    // Click-drag (desktop) for horizontal scroll
+    let isDown = false, startX = 0, startLeft = 0;
+    scroller.addEventListener('mousedown', e => {
+      isDown = true; scroller.classList.add('dragging');
+      startX = e.pageX; startLeft = scroller.scrollLeft;
+    });
+    ['mouseleave','mouseup'].forEach(ev => scroller.addEventListener(ev, () => { isDown = false; scroller.classList.remove('dragging'); }));
+    scroller.addEventListener('mousemove', e => {
+      if (!isDown) return;
+      const dx = e.pageX - startX;
+      scroller.scrollLeft = startLeft - dx;
+    });
+  })();
+</script>
+
+    <script src="script.js"></script>
+    
+</body>
+</html>

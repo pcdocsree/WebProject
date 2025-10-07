@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About • UrbanTech HUB</title>
+
+  <!-- Icons (same CDN used on index) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+   <link rel="icon" type="image/png" href="LOGO.jpg" />
+  <style>
+    :root{
+      --primary:#4f46e5;
+      --primary-dark: #4338ca;
+      --secondary:#10b981;
+      --secondary-dark: #0d9e6e;
+      --dark:#1e293b;
+      --light:#f8fafc;
+      --gray:#94a3b8;
+      --gray-light: #e2e8f0;
+    }
+    *{box-sizing:border-box}
+    body{margin:0; background:#f1f5f9; color:var(--dark); font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
+
+    /* Updated Navigation Bar */
+    .main-navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: white;
+      padding: 12px 5%;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      position: sticky;
+      top: 0;
+      z-index: 999;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.6rem;
+      font-weight: bold;
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .nav-logo img {
+      height: 48px;
+      width: auto;
+      border-radius: 6px;
+    }
+
+    .nav-menu {
+      list-style: none;
+      display: flex;
+      gap: 1.5rem;
+      margin: 0;
+      padding: 0;
+    }
+
+    .nav-menu li a {
+      text-decoration: none;
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--dark);
+      transition: 0.3s ease;
+      padding: 8px 12px;
+      border-radius: 6px;
+    }
+
+    .nav-menu li a:hover {
+      color: var(--primary);
+      background: rgba(79, 70, 229, 0.1);
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .btn-login {
+      padding: 8px 16px;
+      border: 1px solid var(--primary);
+      color: var(--primary);
+      background: transparent;
+      border-radius: 6px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn-login:hover {
+      background: rgba(79, 70, 229, 0.1);
+    }
+
+    .btn-signup {
+      padding: 8px 16px;
+      border: none;
+      background: var(--primary);
+      color: white;
+      border-radius: 6px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn-signup:hover {
+      background: var(--primary-dark);
+    }
+
+    .menu-toggle {
+      display: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: transform 0.3s;
+      background: none;
+      border: none;
+      color: var(--primary);
+    }
+
+    .menu-toggle:hover {
+      transform: rotate(90deg);
+    }
+
+    /* User Profile in Navbar */
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-left: 15px;
+      cursor: pointer;
+    }
+
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--gray-light);
+      transition: all 0.3s;
+    }
+
+    .user-profile:hover .user-avatar {
+      border-color: var(--primary);
+      transform: scale(1.05);
+    }
+
+    .user-name {
+      font-weight: 500;
+      color: var(--dark);
+    }
+
+    /* Mobile Menu */
+    @media (max-width: 768px) {
+      .nav-menu {
+        display: none;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        right: 0;
+        background: white;
+        flex-direction: column;
+        padding: 1rem;
+        box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+      }
+      
+      .nav-actions {
+        display: none;
+      }
+      
+      .nav-menu.active {
+        display: flex;
+      }
+      
+      .menu-toggle {
+        display: block;
+      }
+      
+      .user-profile {
+        display: none;
+      }
+    }
+
+    /* NEW HERO DESIGN */
+    .hero-about {
+      background: linear-gradient(135deg, #f0f4ff 0%, #e6e6ff 50%, #f0f9ff 100%);
+      padding: 60px 0 70px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 5%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 3rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Decorative background elements */
+    .hero-about::before {
+      content: "";
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(79, 70, 229, 0.15) 0%, rgba(16, 185, 129, 0.1) 100%);
+      top: -150px;
+      left: -150px;
+      z-index: 1;
+    }
+
+    .hero-about::after {
+      content: "";
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(239, 68, 68, 0.05) 100%);
+      bottom: -100px;
+      right: -100px;
+      z-index: 1;
+    }
+
+    /* Profile image container with new design */
+    .about-cutout {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 420px;
+    }
+
+    .cutout-container {
+      position: relative;
+      width: 320px;
+      height: 320px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .cutout-img {
+      width: 280px;
+      height: 280px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 6px solid white;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+      z-index: 3;
+      position: relative;
+    }
+
+    /* Decorative circle elements */
+    .decorative-circle {
+      position: absolute;
+      border-radius: 50%;
+      z-index: 1;
+    }
+
+    .circle-1 {
+      width: 340px;
+      height: 340px;
+      background: linear-gradient(135deg, #4f46e5 0%, #818cf8 100%);
+      opacity: 0.1;
+    }
+
+    .circle-2 {
+      width: 380px;
+      height: 380px;
+      background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+      opacity: 0.08;
+      animation: pulse 8s infinite alternate;
+    }
+
+    .circle-3 {
+      width: 420px;
+      height: 420px;
+      background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+      opacity: 0.06;
+      animation: pulse 10s infinite alternate;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.05); }
+    }
+
+    /* Floating shapes */
+    .floating-shape {
+      position: absolute;
+      z-index: 2;
+      opacity: 0.7;
+    }
+
+    .shape-1 {
+      width: 40px;
+      height: 40px;
+      background: var(--primary);
+      border-radius: 10px;
+      top: 30px;
+      left: 30px;
+      transform: rotate(45deg);
+      animation: float 6s infinite ease-in-out;
+    }
+
+    .shape-2 {
+      width: 25px;
+      height: 25px;
+      background: var(--secondary);
+      border-radius: 50%;
+      bottom: 40px;
+      right: 40px;
+      animation: float 8s infinite ease-in-out;
+    }
+
+    .shape-3 {
+      width: 30px;
+      height: 30px;
+      background: #f59e0b;
+      border-radius: 8px;
+      top: 60px;
+      right: 60px;
+      transform: rotate(30deg);
+      animation: float 7s infinite ease-in-out;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-15px) rotate(5deg); }
+    }
+
+    .hero-copy { 
+      text-align: center; 
+      padding: 0 5%;
+      position: relative;
+      z-index: 3;
+    }
+    .hero-title { 
+      font-size: 2.8rem; 
+      margin: 0;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 800;
+    }
+    .title-underline { 
+      display: block; 
+      width: 80px; 
+      height: 5px; 
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      border-radius: 999px; 
+      margin: 1rem auto 1.5rem;
+    }
+    .hero-intro { 
+      color: #374151; 
+      line-height: 1.7; 
+      margin: 0 auto 1.5rem;
+      font-size: 1.1rem;
+    }
+    .hero-down { 
+      color: var(--primary); 
+      font-size: 1.5rem;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+      40% { transform: translateY(-10px); }
+      60% { transform: translateY(-5px); }
+    }
+
+    @media (max-width: 900px){
+      .hero-inner { 
+        grid-template-columns: 1fr; 
+        text-align: center;
+      }
+      .cutout-container {
+        width: 280px;
+        height: 280px;
+        margin: 0 auto;
+      }
+      .cutout-img {
+        width: 240px;
+        height: 240px;
+      }
+      .circle-1 { width: 300px; height: 300px; }
+      .circle-2 { width: 330px; height: 330px; }
+      .circle-3 { width: 360px; height: 360px; }
+      .hero-title { font-size: 2.2rem; }
+    }
+
+    /* About body */
+    .container{max-width:1200px; margin:0 auto; padding:48px 5%}
+    .container.narrow{max-width:1100px}
+    .about-wrap{display:flex; gap:2rem; align-items:flex-start; flex-wrap:wrap}
+    .about-text{flex:1 1 460px}
+    .eyebrow{color:#ef6a3a; font-weight:700; letter-spacing:.08em; margin-bottom:.75rem}
+    .about-text h2{font-size:2rem; line-height:1.25; margin:0 0 1rem}
+    .about-text p{color:#334155; line-height:1.7; margin:0 0 1rem}
+
+    /* What we do: 2×2 grid */
+    .wwd-list{
+      display: grid;
+      grid-template-columns: repeat(2, minmax(280px, 1fr));
+      gap: 1.2rem;
+    }
+    .wwd-item{
+      background:#fff; border:1px solid #e2e8f0; border-radius:10px;
+      padding:16px; display:flex; gap:.75rem; align-items:flex-start; min-height:88px;
+      box-shadow:0 2px 8px rgba(0,0,0,.04);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .wwd-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0,0,0,.08);
+    }
+    .wwd-item i{ color:var(--primary); font-size:1.25rem; margin-top:2px; }
+    .wwd-item h4{ margin:.1rem 0 .25rem; }
+    .wwd-item p{ color:#64748b; font-size:.95rem; margin:0; }
+
+    @media (max-width: 768px){
+      .wwd-list{ grid-template-columns: 1fr; }
+    }
+
+    /* Values / Stats */
+    .values{ padding: 10px 0 32px; }
+    .values-wrap{
+      max-width:1200px; margin:0 auto; padding:0 5%;
+      display:grid; gap:1rem; grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    }
+    .value-card{
+      background:#fff; border:1px solid #e2e8f0; border-radius:12px;
+      padding:22px 16px; text-align:center; box-shadow:0 3px 10px rgba(0,0,0,.05);
+      transition: transform 0.3s ease;
+    }
+    .value-card:hover {
+      transform: translateY(-5px);
+    }
+    .value-card i{color:#f59e0b; font-size:1.4rem}
+    .value-card h3{ margin:.4rem 0 .2rem; font-size:1.6rem }
+
+    /* Developer Team Section */
+    .team-section {
+      padding: 60px 0;
+      background: #f8fafc;
+    }
+    
+    .team-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 5%;
+    }
+    
+    .section-title {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    
+    .section-title h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: var(--dark);
+    }
+    
+    .section-title p {
+      color: #64748b;
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+    }
+    
+    .team-member {
+      background: white;
+      border-radius: 16px;
+      padding: 2rem;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .team-member:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+    }
+    
+    .member-photo {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      overflow: hidden;
+      margin: 0 auto 1.5rem;
+      border: 4px solid white;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    .member-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .member-info h3 {
+      font-size: 1.4rem;
+      margin-bottom: 0.5rem;
+      color: var(--dark);
+    }
+    
+    .member-role {
+      color: var(--primary);
+      font-weight: 600;
+      margin-bottom: 1rem;
+      font-size: 1rem;
+    }
+    
+    .member-bio {
+      color: #64748b;
+      line-height: 1.6;
+      font-size: 0.95rem;
+    }
+
+    /* Developer card with same "blob" feel */
+    .developer{ padding: 22px 0 56px; }
+    .fancy-bg{ position: relative; isolation: isolate; }
+    .fancy-bg::before,
+    .fancy-bg::after{
+      content:""; position:absolute; z-index:-1; filter: blur(26px); opacity:.9; border-radius:50%;
+    }
+    .fancy-bg::before{
+      width: 220px; height: 220px; top: -30px; left: -30px;
+      background:
+        radial-gradient(closest-side at 30% 35%, rgba(79,70,229,.35), transparent 70%),
+        radial-gradient(closest-side at 70% 65%, rgba(16,185,129,.35), transparent 70%),
+        radial-gradient(circle at 50% 50%, rgba(124,58,237,.25), transparent 60%);
+    }
+    .fancy-bg::after{
+      width: 260px; height: 260px; bottom: -30px; right: -30px;
+      background:
+        radial-gradient(closest-side at 35% 65%, rgba(99,102,241,.28), transparent 70%),
+        radial-gradient(closest-side at 70% 30%, rgba(56,189,248,.28), transparent 70%),
+        radial-gradient(circle at 50% 50%, rgba(34,197,94,.22), transparent 60%);
+    }
+    .dev-card{
+      display:flex; align-items:center; gap:1.25rem;
+      background:#fff; border:1px solid #e2e8f0; border-radius:16px;
+      padding:18px 18px; box-shadow:0 8px 22px rgba(0,0,0,.06);
+      transition: transform 0.3s ease;
+    }
+    .dev-card:hover{ 
+      transform: translateY(-5px); 
+    }
+    .dev-photo{ width:120px; height:120px; border-radius:50%; overflow:hidden; border:4px solid #fff; box-shadow:0 6px 14px rgba(0,0,0,.08); flex:0 0 auto; }
+    .dev-photo img{ width:100%; height:100%; object-fit:cover; }
+    .dev-info h3{ font-size:1.35rem; margin:0 0 .35rem; }
+    .dev-info p{ margin:0; color:#475569; line-height:1.6; }
+
+    /* Footer centered */
+    .site-footer{ background:var(--dark); color:#cbd5e1; }
+    .footer-inner{
+      display:flex; align-items:center; justify-content:center; padding:18px 5%; text-align:center;
+    }
+    .footer-inner p{ margin:0 }
+
+  </style>
+</head>
+<body>
+
+  <nav class="main-navbar" role="navigation" aria-label="Main Navigation">
+    <a href="#" class="nav-logo" aria-label="UrbanTech HUB Home">
+      UrbanTech HUB
+    </a>
+  
+    <ul class="nav-menu" id="nav-menu" role="menubar">
+      <li role="none"><a href="main.html" role="menuitem" tabindex="0">Home</a></li>
+      <li role="none"><a href="aboutmain.html" role="menuitem" tabindex="0">About</a></li>
+      <li role="none"><a href="Schedule.html" role="menuitem" tabindex="0">Schedule</a></li>
+      <li role="none"><a href="contact.html" role="menuitem" tabindex="0">Contact</a></li>
+    </ul>
+  
+    <button aria-label="Toggle menu" class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="nav-menu">
+      <i class="fas fa-bars" aria-hidden="true"></i>
+    </button>
+  </nav>
+  
+  
+
+  <!-- HERO: redesigned with circular profile image and decorative elements -->
+  <section class="hero-about">
+    <div class="hero-inner">
+      <div class="about-cutout">
+        <div class="cutout-container">
+          <!-- Decorative circles -->
+          <div class="decorative-circle circle-1"></div>
+          <div class="decorative-circle circle-2"></div>
+          <div class="decorative-circle circle-3"></div>
+          
+          <!-- Profile image -->
+          <img src="about girl.jpg" alt="Profile" class="cutout-img">
+          
+          <!-- Floating shapes -->
+          <div class="floating-shape shape-1"></div>
+          <div class="floating-shape shape-2"></div>
+          <div class="floating-shape shape-3"></div>
+        </div>
+      </div>
+
+      <div class="hero-copy">
+        <h1 class="hero-title">ABOUT US</h1>
+        <span class="title-underline"></span>
+        <p class="hero-intro">
+          Website visitors ignoring offers or not recognizing skills? UrbanTech HUB builds clear, trusted service journeys to convert interest into bookings. 
+        </p>
+        <div class="hero-down"><i class="fa-solid fa-chevron-down"></i></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- What we do -->
+  <section class="container">
+    <div class="about-wrap">
+      <div class="about-text">
+        <p class="eyebrow">WHAT WE DO</p>
+        <h2>Reliable Home & Business Services</h2>
+        <p>
+          UrbanTech HUB connects customers with verified professionals for system, electrical/electronic, chip‑level, and home services across the city. 
+        </p>
+        <p>
+          The platform focuses on clear pricing, fast booking, and trusted support—so projects move from request to completion without friction. 
+        </p>
+
+        <div class="wwd-list">
+          <div class="wwd-item">
+            <i class="fa-solid fa-calendar-check"></i>
+            <div>
+              <h4>Smart Scheduling</h4>
+              <p>Real‑time slots, reminders, and rescheduling options.</p>
+            </div>
+          </div>
+          <div class="wwd-item">
+            <i class="fa-solid fa-shield"></i>
+            <div>
+              <h4>Verified Pros</h4>
+              <p>Profile checks, ratings, and service guarantees.</p>
+            </div>
+          </div>
+          <div class="wwd-item">
+            <i class="fa-solid fa-credit-card"></i>
+            <div>
+              <h4>Secure Payments</h4>
+              <p>Multiple methods with receipts and status tracking.</p>
+            </div>
+          </div>
+          <div class="wwd-item">
+            <i class="fa-solid fa-message"></i>
+            <div>
+              <h4>Clear Communication</h4>
+              <p>In‑app chat and job notes for scope clarity.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Values / Stats (animated counters) -->
+  <section class="values">
+    <div class="values-wrap">
+      <div class="value-card">
+        <i class="fa-solid fa-users"></i>
+        <h3><span class="count" data-target="1000">0</span>+</h3>
+        <p>Happy Customers</p>
+      </div>
+      <div class="value-card">
+        <i class="fa-solid fa-toolbox"></i>
+        <h3><span class="count" data-target="120">0</span>+</h3>
+        <p>Verified Providers</p>
+      </div>
+      <div class="value-card">
+        <i class="fa-solid fa-star"></i>
+        <h3><span class="count" data-target="4.5" data-decimals="1">0</span>/5</h3>
+        <p>Average Rating</p>
+      </div>
+      <div class="value-card">
+        <i class="fa-solid fa-bolt"></i>
+        <h3><span class="count" data-target="30">0</span> mins</h3>
+        <p>Avg. Response</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Developer Team Section -->
+  <section class="team-section">
+    <div class="team-container">
+      <div class="section-title">
+        <h2>Meet Our Team</h2>
+        <p>The talented developers behind UrbanTech HUB who work tirelessly to create the best experience for our users.</p>
+      </div>
+      
+      <div class="team-grid">
+        <div class="team-member">
+          <div class="member-photo">
+            <img src="adminlogo.png" alt="Sree Jith">
+          </div>
+          <div class="member-info">
+            <h3>Sree Jith</h3>
+            <p class="member-role">Lead Developer</p>
+            <p class="member-bio">Sree leads the design and development of UrbanTech HUB's architecture, specializing in scalable backend systems and seamless user experiences.</p>
+          </div>
+        </div>
+        
+        <div class="team-member">
+          <div class="member-photo">
+            <img src="adminlogo.png" alt="Alex Morgan">
+          </div>
+          <div class="member-info">
+            <h3>CEO / Head</h3>
+            <p class="member-role">Chief Executive Officer (CEO)</p>
+            <p class="member-bio">Founded by SreeJith, our company stands for creativity, quality, and performance — empowering businesses and individuals through technology.</p>
+
+          </div>
+        </div>
+        
+        <div class="team-member">
+          <div class="member-photo">
+            <img src="adminlogo.png" alt="Sarah Chen">
+          </div>
+          <div class="member-info">
+            <h3>Sakthi Vel</h3>
+            <p class="member-role">Managing Director (MD)</p>
+            <p class="member-bio">Sakthi Vel is the Managing Director of the company, providing strong leadership and strategic direction to ensure growth and innovation. .</p>
+          </div>
+        </div>
+        
+        <div class="team-member">
+          <div class="member-photo">
+            <img src="adminlogo.png" alt="Marcus Johnson">
+          </div>
+          <div class="member-info">
+            <h3>Fathima</h3>
+            <p class="member-role">IT Team Support</p>
+            <p class="member-bio">Fathima is a key member of our Support IT Team, dedicated to ensuring smooth technical operations.
+She provides reliable system support, handles troubleshooting efficiently, and maintains network stability.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Centered Footer -->
+  <footer class="site-footer">
+    <div class="container narrow footer-inner">
+      <p>© 2025 UrbanTech HUB. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Counter animation script -->
+  <script>
+    (function(){
+      const counters = document.querySelectorAll('.count');
+      if (!('IntersectionObserver' in window) || counters.length === 0) return;
+
+      const animate = (el) => {
+        const target = parseFloat(el.dataset.target);
+        const decimals = parseInt(el.dataset.decimals || '0', 10);
+        const duration = 1200; // ms
+        let start = null;
+
+        const step = (ts) => {
+          if (!start) start = ts;
+          const p = Math.min((ts - start) / duration, 1);
+          const value = target * p;
+          el.textContent = value.toFixed(decimals);
+          if (p < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+      };
+
+      const obs = new IntersectionObserver((entries, ob) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            animate(entry.target);
+            ob.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.35 });
+
+      counters.forEach(el => obs.observe(el));
+    })();
+
+    // Mobile menu toggle functionality
+    const menuToggleBtn = document.querySelector('.menu-toggle');
+    const navMenu = document.querySelector('.nav-menu');
+    if (menuToggleBtn && navMenu) {
+      menuToggleBtn.addEventListener('click', () => {
+        const expanded = menuToggleBtn.getAttribute('aria-expanded') === 'true' || false;
+        menuToggleBtn.setAttribute('aria-expanded', !expanded);
+        navMenu.classList.toggle('active');
+      });
+    }
+  </script>
+</body>
+</html>

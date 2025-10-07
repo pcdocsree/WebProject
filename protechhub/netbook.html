@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>UrbanTech HUB — Booking</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="LOGO.jpg" />
+<style>
+  :root{
+    --bg:#f3f6fb;
+    --card:#ffffff;
+    --primary:#4f46e5;
+    --muted:#6b7280;
+    --success:#10b981;
+    --shadow: 0 6px 22px rgba(15,23,42,0.08);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family:'Poppins',sans-serif;
+    background: #070924;
+    color:#111827;
+    -webkit-font-smoothing:antialiased;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+  }
+  /* Stylish Animated Blurred Background Blobs */
+  .bg-blobs {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    z-index: 0;
+    pointer-events: none;
+    filter: saturate(1.2);
+    background: radial-gradient(ellipse at center, #000829 0%, #040222 100%);
+  }
+  .blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.6;
+    mix-blend-mode: screen;
+    animation-timing-function: linear;
+  }
+  .blob1 { width: 320px; height: 320px; background: #7c73e6; top: 32%; left: 6%; animation: moveBlob1 36s infinite alternate; }
+  .blob2 { width: 420px; height: 420px; background: #e14eca; top: 60%; left: 66%; animation: moveBlob2 35s infinite alternate; }
+  .blob3 { width: 210px; height: 260px; background: #00e0ff; top: 4%; left: 62%; animation: moveBlob3 44s infinite alternate; }
+  @keyframes moveBlob1 { 0% {transform: translate(0, 0);} 100% {transform: translate(30px, -40px);} }
+  @keyframes moveBlob2 { 0% {transform: translate(0, 0);} 100% {transform: translate(-40px, 35px);} }
+  @keyframes moveBlob3 { 0% {transform: translate(0, 0);} 100% {transform: translate(-22px, 20px);} }
+
+  /* Container */
+  .wrap{
+    max-width:780px;
+    margin:44px auto;
+    padding:20px;
+    position: relative;
+    z-index: 1;
+  }
+  .card {
+    background:var(--card);
+    border-radius:16px;
+    box-shadow:var(--shadow);
+    overflow:hidden;
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.95);
+  }
+  .card-inner{
+    padding:22px;
+  }
+  /* Header */
+  .title {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:12px;
+  }
+  .title h1{
+    font-size:18px;
+    margin:0;
+    font-weight:600;
+    letter-spacing:0.2px;
+  }
+  .subtitle{
+    font-size:13px;
+    color:var(--muted);
+    margin-top:6px;
+  }
+  /* Service small card */
+  .service-row{
+    display:flex;
+    gap:14px;
+    align-items:center;
+    padding:12px;
+    border-radius:10px;
+    background:linear-gradient(180deg, rgba(79,70,229,0.03), rgba(79,70,229,0.01));
+    border:1px solid rgba(79,70,229,0.04);
+  }
+  .svc-thumb{
+    width:78px;
+    height:78px;
+    border-radius:8px;
+    object-fit:cover;
+    flex-shrink:0;
+    box-shadow: 0 6px 18px rgba(79,70,229,0.06);
+  }
+  .svc-info{
+    flex:1;
+    min-width:0;
+  }
+  .svc-info .svc-name{
+    font-weight:600;
+    font-size:15px;
+    margin-bottom:6px;
+    color:var(--primary);
+  }
+  .svc-meta{
+    display:flex;
+    gap:10px;
+    align-items:center;
+    font-size:13px;
+    color:var(--muted);
+    flex-wrap:wrap;
+  }
+  .rating { color: #f6b150; font-weight:600; }
+  /* Form layout */
+  .form-grid{
+    display:grid;
+    grid-template-columns: 1fr;
+    gap:12px;
+    margin-top:18px;
+  }
+  label{ font-size:13px; color:var(--muted); display:block; margin-bottom:6px; }
+  input[type="text"], input[type="email"], input[type="tel"]{
+    width:100%;
+    padding:12px 14px;
+    border-radius:8px;
+    border:1px solid #e6e9f2;
+    font-size:14px;
+    outline:none;
+    background: #fff;
+    transition: all 0.3s ease;
+  }
+  input:focus{ 
+    border-color:var(--primary); 
+    box-shadow: 0 6px 18px rgba(79,70,229,0.06);
+    transform: translateY(-2px);
+  }
+  /* Confirm */
+  .actions{
+    margin-top:16px;
+    display:flex;
+    gap:12px;
+    align-items:center;
+  }
+  .btn{
+    background:var(--primary);
+    color:#fff;
+    padding:12px 14px;
+    border-radius:10px;
+    border:none;
+    font-weight:600;
+    cursor:pointer;
+    box-shadow: 0 8px 26px rgba(79,70,229,0.12);
+    transition: all 0.3s ease;
+  }
+  .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(79,70,229,0.2);
+  }
+  .btn:active{ transform:translateY(1px); }
+  .btn[disabled]{ 
+    opacity:0.5; 
+    cursor:not-allowed; 
+    box-shadow:none; 
+    transform:none;
+  }
+  .summary{
+    text-align:right;
+    color:var(--muted);
+    font-size:14px;
+  }
+  /* success area */
+  .success{
+    text-align:center;
+    padding:28px;
+    display:none;
+    align-items:center;
+    gap:12px;
+    justify-content:center;
+    flex-direction:column;
+    background: rgba(16, 185, 129, 0.1);
+    border-radius: 12px;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+  }
+  .success h2{ color:var(--success); margin:0 0 6px 0; }
+  .help{ color:var(--muted); font-size:14px; }
+  /* Popup Modal Styles */
+  .modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+  }
+  .modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+  .modal {
+    background: white;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    transform: translateY(20px) scale(0.95);
+    transition: all 0.4s ease;
+  }
+  .modal-overlay.active .modal { transform: translateY(0) scale(1);}
+  .modal-header {
+    background: #4f46e5;
+    color: white;
+    padding: 20px;
+    text-align: center;
+  }
+  .modal-header h3 { margin: 0; font-size: 18px; font-weight: 600; }
+  .modal-content {
+    padding: 25px;
+    text-align: center;
+  }
+  .modal-content p {
+    margin-bottom: 20px;
+    color: #6b7280;
+    font-size: 15px;
+  }
+  .modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+  }
+  .modal-btn {
+    padding: 12px 24px;
+    border-radius: 10px;
+    border: none;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 120px;
+    font-size: 14px;
+  }
+  .modal-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+  }
+  .modal-btn:active {
+    transform: scale(0.98);
+  }
+  .modal-btn.accept { background: #4f46e5; color: white; }
+  .modal-btn.accept:hover { background: #4338ca; box-shadow: 0 8px 20px rgba(79,70,229,0.3);}
+  .modal-btn.decline { background: #ef4444; color: white;}
+  .modal-btn.decline:hover { background: #dc2626; box-shadow: 0 8px 20px rgba(239,68,68,0.3);}
+  /* responsive */
+  @media (max-width:600px){
+    .card-inner{ padding:16px;}
+    .summary{ text-align:left;}
+    .modal-buttons { flex-direction: column;}
+    .modal-btn { width: 100%;}
+  }
+</style>
+</head>
+<body>
+  <!-- Blurry Animated Blobs Background, just like tracking page -->
+  <div class="bg-blobs">
+    <div class="blob blob1"></div>
+    <div class="blob blob2"></div>
+    <div class="blob blob3"></div>
+  </div>
+  <div class="wrap">
+    <div class="card" role="region" aria-label="Booking card">
+      <div class="card-inner">
+        <div class="title">
+          <div>
+            <h1>Confirm Booking</h1>
+            <div class="subtitle">Fill details to complete the booking</div>
+          </div>
+          <div class="summary">
+            <div style="font-weight:600">Cost Depand on your Work</div>
+            <div style="font-size:12px;color:var(--muted)">Deep Home Clean </div>
+          </div>
+        </div>
+        <!-- service -->
+        <div class="service-row">
+          <img class="svc-thumb" src="net.webp" alt="Service Image" onerror="this.style.display='none';">
+          <div class="svc-info">
+            <div class="svc-name">Network / Router</div>
+            <div class="svc-meta">
+              <div>Service Company: <strong>ReadyLink</strong></div>
+              <div class="rating">★ 4.9</div>
+              <div>• Kondasamy Naidu, 1st Street, Velandipalayam, Coimbatore, Tamil Nadu 641025</div>
+            </div>
+            <div style="margin-top:8px; color:var(--muted); font-size:13px">Contact: +91 89395 84835</div>
+          </div>
+        </div>
+        <!-- form -->
+        <form id="bookingForm" class="form-grid" autocomplete="off" novalidate>
+          <div>
+            <label for="name">Client name</label>
+            <input id="name" name="name" type="text" placeholder="Full name" required>
+          </div>
+          <div>
+            <label for="email">Email address</label>
+            <input id="email" name="email" type="email" placeholder="you@example.com" required>
+          </div>
+          <div>
+            <label for="phone">Phone number</label>
+            <input id="phone" name="phone" type="tel" placeholder="+91 98 7654 3210" required>
+          </div>
+          <div class="actions">
+            <button id="confirmBtn" class="btn" type="button" disabled>Confirm Booking</button>
+          </div>
+        </form>
+        <!-- Success -->
+        <div id="successArea" class="success" role="status" aria-live="polite">
+          <svg width="56" height="56" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M20 6L9 17l-5-5" stroke="#10B981" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <h2>We will contact you soon</h2>
+          <div class="help">Thanks — your booking has been received. Our team will call to confirm details.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Popup Modal -->
+  <div class="modal-overlay" id="trackingModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Track Your Service?</h3>
+      </div>
+      <div class="modal-content">
+        <p>Would you like to track your service provider in real-time?</p>
+        <div class="modal-buttons">
+          <button class="modal-btn accept" id="acceptTrack">Yes, Track</button>
+          <button class="modal-btn decline" id="declineTrack">No, Thanks</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<script>
+  const confirmBtn = document.getElementById('confirmBtn');
+  const nameInput = document.getElementById('name');
+  const emailInput = document.getElementById('email');
+  const phoneInput = document.getElementById('phone');
+  const form = document.getElementById('bookingForm');
+  const successArea = document.getElementById('successArea');
+  const trackingModal = document.getElementById('trackingModal');
+  const acceptTrack = document.getElementById('acceptTrack');
+  const declineTrack = document.getElementById('declineTrack');
+  function validateForm() {
+    const nameOk = nameInput.value.trim().length > 2;
+    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value.trim());
+    const phoneOk = phoneInput.value.trim().length >= 7;
+    confirmBtn.disabled = !(nameOk && emailOk && phoneOk);
+  }
+  [nameInput, emailInput, phoneInput].forEach(el => {
+    el.addEventListener('input', validateForm);
+  });
+  confirmBtn.addEventListener('click', () => {
+    if (confirmBtn.disabled) return;
+    document.querySelector('.card-inner form').style.display = 'none';
+    successArea.style.display = 'flex';
+    window.scrollTo({ top: successArea.offsetTop - 30, behavior: 'smooth' });
+    setTimeout(() => {
+      trackingModal.classList.add('active');
+    }, 1500);
+  });
+  acceptTrack.addEventListener('click', () => {
+    trackingModal.classList.remove('active');
+    window.location.href = "track.html";
+  });
+  declineTrack.addEventListener('click', () => {
+    trackingModal.classList.remove('active');
+    successArea.style.display = 'flex';
+  });
+  trackingModal.addEventListener('click', (e) => {
+    if (e.target === trackingModal) {
+      trackingModal.classList.remove('active');
+      successArea.style.display = 'flex';
+    }
+  });
+  form.addEventListener('submit', (e) => e.preventDefault());
+  validateForm();
+</script>
+</body>
+</html>
